@@ -1,0 +1,118 @@
+Quiz: Lesson 1
+
+Quiz from lesson one materials. You can do this yourself, or create a new gist or blog entry, answer the quiz, and post the link to the forums and others can take a look.
+
+1. Why do they call it a relational database?
+
+"Relation", a term used in relational theory, is essentially a synonym for "table".  In relational databases data is collected into tables.
+
+
+2.  What is SQL?
+
+SQL is the dominant programming language for relational databases.
+
+3.  There are two predominant views into a relational database. What are they, and how are they different?
+
+Data view: shows data like an excel spreadsheet with numbered rows and customized columns.
+
+Schema view: lists columns and type (e.g. string or integer)
+
+4.  In a table, what do we call the column that serves as the main identifier for a row of data? We're looking for the general database term, not the column name.
+
+Primary key
+
+
+5.  What is a foreign key, and how is it used?
+
+A foreign key is a field in a relational database that matches the primary key column of another table.
+
+
+6.  At a high level, describe the ActiveRecord pattern. This has nothing to do with Rails, but the actual pattern that ActiveRecord uses to perform its ORM duties.
+
+An object that wraps a row in a database table or view, encapsulates the database access, and adds domain logic on that data.
+
+
+7.  If there's an ActiveRecord model called "CrazyMonkey", what should the table name be?
+
+"CrazyMonkey".tableize = crazy_monkeys
+
+
+8. If I'm building a 1:M association between Project and Issue, what will the model associations and foreign key be?
+
+Project is "1" side and Issues is "Many" side.  Foreign key will be project_id.
+
+class Project
+	has_many :issues
+end
+
+class Issues
+	belongs_to :project
+end
+
+
+
+9. Given this code
+
+class Zoo < ActiveRecord::Base
+  has_many :animals
+end
+
+a) What do you expect the other model to be and what does database schema look like?
+
+class Animal < ActiveRecord::Base
+	belongs_to :zoo
+end
+
+zoos table with primary key of id
+animals table with primary key of id, foreign key of zoo_id
+
+b) What are the methods that are now available to a zoo to call related to animals?
+
+zoo.animals will return list of all animals
+zoo.animals.first will return first row of data in animals table
+
+c) How do I create an animal called "jumpster" in a zoo called "San Diego Zoo"?
+
+zoo = Zoo.create(zooname: 'San Diego Zoo')
+animal = Animal.create(name:'Jumpster')
+
+zoo.animals << animal
+
+10. What is mass assignment? What's the non-mass assignment way of setting values?
+
+Mass assignment enables you to set multiple values on one line, otherwise you would have to do it on multiple lines.
+
+11. What does this code do? Animal.first
+
+Returns first row from animals table.
+
+12. If I have a table called "animals" with columns called "name", and a model called Animal, how do I instantiate an animal object with name set to "Joe". Which methods makes sure it saves to the database?
+
+animal = Animal.create(name:"Joe")
+
+13. How does a M:M association work at the database level?
+
+Through a combination of the join table, 1:M associations to the join table and the has_many : through technique.
+
+14. What are the two ways to support a M:M association at the ActiveRecord model level? Pros and cons of each approach?
+
+has_many :through requires the extra work of setting up a join model and join table but enables you to add attributes to the join table.
+
+has_and_belongs_to_many doesn't require a join model or join table but cannot add attributes to the invisible join table.
+
+15. Suppose we have a User model and a Group model, and we have a M:M association all set up. How do we associate the two?
+
+class User < ActiveRecord::Base
+	has_many :user_groups
+	has_many :groups, through :user_groups
+end
+
+class UserGroup < ActiveRecord::Base
+	belongs_to :user
+	belongs_to: group
+end
+
+class Group < ActiveRecord::Base
+	has_many :user_groups
+	has_many :users, through :user_groups
+end

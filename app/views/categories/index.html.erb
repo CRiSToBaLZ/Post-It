@@ -1,0 +1,10 @@
+<p class = 'lead'>
+	Categories
+	<hr/>
+</p>
+
+<% @categories.each do |category| %>
+	<ul>
+	<span class ="badge"><%= link_to("#{category.name}", category_path(category)) %></span><small>(<%= link_to 'edit', edit_category_path(category )%>)</small>
+	</ul>
+<% end %>

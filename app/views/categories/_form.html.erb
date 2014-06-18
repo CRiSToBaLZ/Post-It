@@ -1,0 +1,9 @@
+<div class = 'well'>
+<%=form_for @category do |c| %>
+	<div class = 'control group'>
+		<%= c.label :name %>
+		<%= c.text_field :name %>
+	</div>
+		<br/>
+		<%=c.submit(@category.new_record? ? 'Create Category' : 'Update Category', class: 'btn btn-primary') %>
+<% end %>

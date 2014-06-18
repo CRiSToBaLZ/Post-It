@@ -1,0 +1,86 @@
+Quiz: Lesson 2
+
+Some exercises from lesson 2 materials:
+
+1.  Name all the 7 (or 8) routes exposed by the resources keyword in the routes.rb file. Also name the 4 named routes, and how the request is routed to the controller/action.
+
+Prefix		Verb		URI					Controller#Action
+posts		GET			/posts				posts#index
+			POST		/posts				posts#create
+new_post	GET			/posts/new			posts#new
+edit_post	GET			/posts/:id/edit		posts#edit
+post		GET			/posts/:id			posts#show
+			PATCH		/posts/:id			posts#update
+			PUT			/posts/:id			posts#update
+			DELETE		/posts/:id			posts#destroy
+
+
+2.  What is REST and how does it relate to the resources routes?
+
+REST stands for Representational State Transfer -- the resources routes are the Rails implementation of REST.
+
+3.  What's the major difference between model backed and non-model backed form helpers?
+
+Model backed form helpers are tied to an object, and are used to create, edit or update that object.
+
+4.  How does form_for know how to build the <form> element?
+
+It is a Rails convention.
+
+5.  What's the general pattern we use in the actions that handle submission of model-backed forms (ie, the create and update actions)?
+
+  def create
+    @post = Post.new(post_params)
+    @post.user = User.first
+    
+    if @post.save
+      flash[:notice] = "Your post was created."
+      redirect_to posts_path
+    else #validation error
+      render 'new'
+    end
+  end
+  
+  def update    
+    if @post.update(post_params)
+      flash[:notice] = "Your post was updated."
+      redirect_to posts_path
+    else
+      render 'edit'
+    end
+    
+  end
+
+
+6.  How exactly do Rails validations get triggered? Where are the errors saved? How do we show the validation messages on the user interface?
+
+They are triggered when data submissions try to hit database and are saved to object.errors.
+
+<% if obj.errors.any? %>
+    <div class="row">
+        <div class="alert alert-error span8">
+        <h5>Please fix the following errors:</h5>
+        <ul>
+        <% obj.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+        <% end %>
+        </ul>
+        </div>
+    </div>
+<% end %>
+
+7.  What are Rails helpers?
+
+An extract logic file that can be shared amongst files in the "views" folder.
+
+8.  What are Rails partials?
+
+An extract HTML file that can be shared amongst files in the "views" folder.
+
+9.  When do we use partials vs helpers?
+
+Helpers are logic-oriented whereas partails are html-oriented.
+
+10.  When do we use non-model backed forms?
+
+For simpler programming tasks more akin to HTML.
