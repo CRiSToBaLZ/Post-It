@@ -1,2 +1,2 @@
-			<span class='quiet'>posted by</span> <%= object.user.username %>
+			<span class='quiet'>posted by</span> <%= link_to object.user.username, user_path(object.user) %>
 			<small>on <%= object.created_at.to_formatted_s(:long_ordinal) %></small>

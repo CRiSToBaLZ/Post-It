@@ -1,6 +1,7 @@
 class PostsController < ApplicationController
  
-  before_action :set_post, only: [:show, :edit, :update]
+  before_action :set_post, only: [:show, :edit, :update, :vote]
+  before_action :require_user, except: [:index, :show]
   #1. set up instance variable for action
   #2. redirect based on some condition
    
@@ -18,7 +19,7 @@ class PostsController < ApplicationController
   
   def create
     @post = Post.new(post_params)
-    @post.user = User.first
+    @post.user = current_user
     
     if @post.save
       flash[:notice] = "Your post was created."
@@ -40,6 +41,17 @@ class PostsController < ApplicationController
       render 'edit'
     end
     
+  end
+
+  def vote
+    @vote = Vote.create(voteable: @post, user: current_user, vote: params[:vote])
+
+    if @vote.valid?
+      flash[:notice] = "Your vote was counted."
+    else
+      flash[:error] = "You can only vote for #{@post.title} once."
+    end
+    redirect_to :back
   end
   
   private
