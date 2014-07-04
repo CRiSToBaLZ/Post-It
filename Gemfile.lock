@@ -1,3 +1,8 @@
+PATH
+  remote: /Users/christophercorona/Documents/Tealeaf/voteable-gem
+  specs:
+    voteable_christo (0.0.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -149,3 +154,4 @@ DEPENDENCIES
   thin
   turbolinks
   uglifier (>= 1.3.0)
+  voteable_christo!
