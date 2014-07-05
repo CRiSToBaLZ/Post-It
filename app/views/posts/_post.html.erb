@@ -15,10 +15,11 @@
 
 		<div class = 'span8 well'>
 			<%= render post.categories %>
-			<h4><%= link_to post.title, fix_url(post.url) %> <small><%= link_to '(edit)', edit_post_path(post) if logged_in? %></small></h4>
+			<h4><%= link_to post.title, fix_url(post.url) %> <small><%= link_to '(edit)', edit_post_path(post) if logged_in? and (current_user.admin? or current_user == post.user) %></small></h4>
 			<p><%= post.description %></p>
 		<p>
-		<%= render 'shared/date_time', object: post %>
+		<span class = 'quiet'>posted by</span> <%=post.user.username %>
+		<small>at <%= display_datetime(post.created_at) %></small>
 		</p>
 		<small>
 			<span>

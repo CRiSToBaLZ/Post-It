@@ -2,6 +2,9 @@ class PostsController < ApplicationController
  
   before_action :set_post, only: [:show, :edit, :update, :vote]
   before_action :require_user, except: [:index, :show]
+  before_action :require_creator, only: [:edit, :update]
+  # before_action :require_admin, only: [:edit]
+
   #1. set up instance variable for action
   #2. redirect based on some condition
    

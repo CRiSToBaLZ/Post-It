@@ -3,9 +3,8 @@ module ApplicationHelper
     str.starts_with?('http://') ? str : "http://#{str}"
   end
   
-  # #Use application helper
-  # def display_datetime(dt)
-  #   dt.to_formatted_s(:long_ordinal)
-  
+  def display_datetime(dt)
+    dt.strftime("%m/%d/%Y %l:%M%P %Z")
+  end
 
 end

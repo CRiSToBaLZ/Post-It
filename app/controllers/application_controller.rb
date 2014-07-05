@@ -4,7 +4,13 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   
   helper_method :current_user, :logged_in?
-  
+
+  before_filter :set_user_time_zone
+
+  def set_user_time_zone
+    Time.zone = current_user.time_zone if logged_in?
+  end
+
   def current_user
     # if there's an authenticated user, return the user obj
     # else return nil
@@ -18,10 +24,22 @@ class ApplicationController < ActionController::Base
   end
   
   def require_user
-    if !logged_in?
-      flash[:error] = "Must be logged in to do that."
-    end
+    access_denied unless logged_in?
   end
       
+  def require_admin
+    access_denied unless logged_in? and current_user.admin?
+  end
+
+  def require_creator
+    access_denied unless logged_in? and (current_user.admin? or current_user == @post.user)
+  end
+
+  def access_denied
+    flash[:error] = "You can't do that."
+    redirect_to root_path
+  end
+
+
   
 end
